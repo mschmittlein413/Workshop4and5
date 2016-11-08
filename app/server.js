@@ -27,6 +27,7 @@ function getFeedItemSync(feedItemId) {
   // Resolve comment author.
   feedItem.comments.forEach((comment) => {
     comment.author = readDocument('users', comment.author);
+    comment.likeCounter = readDocument('users', comment.likeCounter);
   });
   return feedItem;
 }
@@ -105,7 +106,8 @@ export function postComment(feedItemId, author, contents, cb) {
   feedItem.comments.push({
     "author": author,
     "contents": contents,
-    "postDate": new Date().getTime()
+    "postDate": new Date().getTime(),
+    "likeCounter": []
   });
   writeDocument('feedItems', feedItem);
   // Return a resolved version of the feed item so React can
